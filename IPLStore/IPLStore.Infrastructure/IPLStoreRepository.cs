@@ -14,6 +14,7 @@ namespace IPLStore.Infrastructure
         public async Task<Cart> GetOrCreateCartAsync(string userId, CancellationToken cancellationToken)
         {
             var cart = await dbContext.Carts
+                .AsNoTracking()
                 .AsSplitQuery()
                 .Include(c => c.Items)
                     .ThenInclude(i => i.Product)

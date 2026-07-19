@@ -13,7 +13,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<IPLStoreDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<IPLStoreDbContext>(options => options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()));
 builder.Services.AddScoped<IPLStoreRepository>();
 builder.Services.AddScoped<ICartRepository>(sp => sp.GetRequiredService<IPLStoreRepository>());
 builder.Services.AddScoped<IOrderRepository>(sp => sp.GetRequiredService<IPLStoreRepository>());
