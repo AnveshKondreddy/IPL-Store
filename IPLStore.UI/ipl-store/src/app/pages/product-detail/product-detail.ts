@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import { ProductDetails } from '../../models/product';
 
 @Component({
@@ -20,6 +21,7 @@ import { ProductDetails } from '../../models/product';
 })
 export class ProductDetailComponent implements OnInit {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly snackBar = inject(MatSnackBar);
@@ -48,7 +50,7 @@ export class ProductDetailComponent implements OnInit {
     const p = this.product();
     if (!p) return;
 
-    this.api.addToCart('default-user', p.id, this.quantity())
+    this.api.addToCart(this.auth.username()!, p.id, this.quantity())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {

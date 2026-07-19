@@ -12,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import { ProductListItem } from '../../models/product';
 
 @Component({
@@ -27,6 +28,7 @@ import { ProductListItem } from '../../models/product';
 })
 export class HomeComponent implements OnInit {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly snackBar = inject(MatSnackBar);
 
@@ -108,7 +110,7 @@ export class HomeComponent implements OnInit {
 
   addToCart(product: ProductListItem): void {
     const qty = this.getQuantity(product.id);
-    this.api.addToCart('default-user', product.id, qty)
+    this.api.addToCart(this.auth.username()!, product.id, qty)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {

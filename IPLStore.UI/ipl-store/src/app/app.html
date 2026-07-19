@@ -3,17 +3,25 @@
     <i class="fas fa-cricket-bat-ball"></i> IPL Store
   </a>
   <span class="spacer"></span>
-  <nav class="nav-links">
-    <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-      <i class="fas fa-store"></i> Products
-    </a>
-    <a mat-button routerLink="/cart" routerLinkActive="active">
-      <i class="fas fa-shopping-cart"></i> Cart
-    </a>
-    <a mat-button routerLink="/orders" routerLinkActive="active">
-      <i class="fas fa-receipt"></i> Orders
-    </a>
-  </nav>
+  @if (auth.isLoggedIn()) {
+    <nav class="nav-links">
+      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-store"></i> Products
+      </a>
+      <a mat-button routerLink="/cart" routerLinkActive="active">
+        <i class="fas fa-shopping-cart"></i> Cart
+      </a>
+      <a mat-button routerLink="/orders" routerLinkActive="active">
+        <i class="fas fa-receipt"></i> Orders
+      </a>
+    </nav>
+    <span class="user-info">
+      <i class="fas fa-user-circle"></i> {{ auth.username() }}
+    </span>
+    <button mat-button (click)="logout()" class="logout-btn">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  }
 </mat-toolbar>
 
 <main>

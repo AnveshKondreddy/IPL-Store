@@ -1,0 +1,32 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>
+        <i class="fas fa-cricket-bat-ball"></i> Welcome to IPL Store
+      </mat-card-title>
+      <mat-card-subtitle>Enter your username to continue</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="login()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput
+                 [ngModel]="username()"
+                 (ngModelChange)="username.set($event); error.set('')"
+                 name="username"
+                 placeholder="e.g. john_doe"
+                 autocomplete="username"
+                 maxlength="50"
+                 required>
+          <mat-icon matPrefix>person</mat-icon>
+          @if (error()) {
+            <mat-error>{{ error() }}</mat-error>
+          }
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="full-width login-btn">
+          <i class="fas fa-sign-in-alt"></i> Continue
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

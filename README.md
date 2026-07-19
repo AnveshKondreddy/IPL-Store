@@ -23,10 +23,15 @@ IPLStore/
 ├── IPLStore.Tests/             # Unit tests for all service classes
 IPLStore.UI/
 └── ipl-store/                  # Angular SPA (standalone components, signals)
+    ├── guards/                 # Route guards (auth guard)
+    ├── services/               # ApiService, AuthService
+    └── pages/                  # home, product-detail, cart, orders, login
 ```
 
 ## Features
 
+* User login page with username capture (extensible for auth providers)
+* Route guard redirects unauthenticated users to the login page
 * Product listing with prices, pagination, and franchise/type filters
 * Product detail page with description, stock info, and add-to-cart
 * Search by product name, type, or franchise
@@ -34,6 +39,7 @@ IPLStore.UI/
 * Checkout that validates stock and decrements inventory
 * Order history with expandable order details
 * Concurrency handling via EF Core row versioning
+* Global exception handler with structured problem+json responses
 
 ## Prerequisites
 
@@ -111,6 +117,12 @@ The Angular dev server starts at `http://localhost:4200` and proxies `/api` requ
 cd IPLStore
 dotnet test
 ```
+
+## Authentication
+
+The app uses a simple username-based login stored in `sessionStorage`. The `AuthService` manages user state via Angular signals and provides `login()`, `logout()`, `username()`, and `isLoggedIn()` methods. All routes except `/login` are protected by an `authGuard` that redirects unauthenticated users.
+
+This design is intentionally minimal and ready to be extended with a real auth provider (e.g., Microsoft Entra ID, Auth0) by updating only the `AuthService`.
 
 ## Architecture
 

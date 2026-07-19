@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import { Order } from '../../models/order';
 import { PagedResult } from '../../models/product';
 
@@ -19,6 +20,7 @@ import { PagedResult } from '../../models/product';
 })
 export class OrdersComponent implements OnInit {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -38,7 +40,7 @@ export class OrdersComponent implements OnInit {
 
   loadOrders(): void {
     this.loading.set(true);
-    this.api.getOrderHistory('default-user', this.page(), this.pageSize)
+    this.api.getOrderHistory(this.auth.username()!, this.page(), this.pageSize)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result: PagedResult<Order>) => {

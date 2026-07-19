@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import { Cart } from '../../models/cart';
 
 @Component({
@@ -19,6 +20,7 @@ import { Cart } from '../../models/cart';
 })
 export class CartComponent implements OnInit {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly snackBar = inject(MatSnackBar);
@@ -34,7 +36,7 @@ export class CartComponent implements OnInit {
 
   loadCart(): void {
     this.loading.set(true);
-    this.api.getCart('default-user')
+    this.api.getCart(this.auth.username()!)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (c) => { this.cart.set(c); this.loading.set(false); },
@@ -44,20 +46,20 @@ export class CartComponent implements OnInit {
 
   updateQuantity(productId: number, qty: number): void {
     if (qty < 1) return;
-    this.api.updateCartItem('default-user', productId, qty)
+    this.api.updateCartItem(this.auth.username()!, productId, qty)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.loadCart());
   }
 
   removeItem(productId: number): void {
-    this.api.removeCartItem('default-user', productId)
+    this.api.removeCartItem(this.auth.username()!, productId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.loadCart());
   }
 
   checkout(): void {
     this.checkingOut.set(true);
-    this.api.checkout('default-user')
+    this.api.checkout(this.auth.username()!)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (order) => {
