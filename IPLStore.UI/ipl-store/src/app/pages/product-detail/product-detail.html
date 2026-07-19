@@ -1,0 +1,53 @@
+@if (loading()) {
+  <p class="status"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
+} @else if (error()) {
+  <p class="status error">{{ error() }}</p>
+} @else if (product(); as p) {
+  <div class="detail-container">
+    <a mat-button routerLink="/">
+      <i class="fas fa-arrow-left"></i> Back to products
+    </a>
+
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-subtitle>
+          <mat-chip-set>
+            <mat-chip>{{ p.franchiseName }}</mat-chip>
+            <mat-chip>{{ p.type }}</mat-chip>
+          </mat-chip-set>
+        </mat-card-subtitle>
+        <mat-card-title>{{ p.name }}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="description">{{ p.description }}</p>
+
+        <div class="meta-row">
+          <span class="price">{{ p.price | currency:'INR':'symbol':'1.0-0' }}</span>
+          <span class="stock" [class.out]="p.stockQty === 0">
+            @if (p.stockQty > 0) {
+              <i class="fas fa-check-circle"></i> {{ p.stockQty }} in stock
+            } @else {
+              <i class="fas fa-times-circle"></i> Out of stock
+            }
+          </span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <div class="quantity-control">
+          <button mat-icon-button [disabled]="quantity() <= 1" (click)="adjustQuantity(-1)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <span class="qty-value">{{ quantity() }}</span>
+          <button mat-icon-button [disabled]="p.stockQty === 0" (click)="adjustQuantity(1)">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <button mat-flat-button color="primary" [disabled]="p.stockQty === 0" (click)="addToCart()">
+          <i class="fas fa-cart-plus"></i> Add to Cart
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+}

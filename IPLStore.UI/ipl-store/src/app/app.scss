@@ -1,0 +1,43 @@
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+
+  a {
+    color: inherit;
+    text-transform: none;
+    font-size: 0.9rem;
+
+    i {
+      margin-right: 0.3rem;
+    }
+
+    &.active {
+      opacity: 1;
+      font-weight: 500;
+    }
+  }
+}
+
+main {
+  min-height: calc(100vh - 64px);
+}

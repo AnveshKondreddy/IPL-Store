@@ -1,0 +1,60 @@
+.status {
+  text-align: center;
+  padding: 3rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &.error { color: var(--mat-sys-error); }
+}
+
+.detail-container {
+  max-width: 700px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.detail-card {
+  margin-top: 1rem;
+}
+
+.description {
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stock {
+  font-size: 0.9rem;
+  color: green;
+
+  i { margin-right: 0.25rem; }
+
+  &.out { color: var(--mat-sys-error); }
+}
+
+mat-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+
+  .qty-value {
+    min-width: 2rem;
+    text-align: center;
+    font-size: 1rem;
+  }
+}

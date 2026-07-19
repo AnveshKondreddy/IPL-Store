@@ -1,0 +1,95 @@
+<section class="hero">
+  <h1>IPL Merchandise Store</h1>
+  <p>Official merchandise from your favourite IPL franchises</p>
+</section>
+
+<section class="filters">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search products</mat-label>
+    <input matInput [ngModel]="search()" (ngModelChange)="search.set($event)" (keyup.enter)="onSearch()" />
+    <button matSuffix mat-icon-button (click)="onSearch()">
+      <i class="fas fa-search"></i>
+    </button>
+  </mat-form-field>
+
+  <div class="filter-row">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Franchise</mat-label>
+      <mat-select [ngModel]="franchise()" (ngModelChange)="franchise.set($event); onSearch()">
+        <mat-option value="">All Franchises</mat-option>
+        @for (f of franchises; track f.code) {
+          <mat-option [value]="f.code">{{ f.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Type</mat-label>
+      <mat-select [ngModel]="type()" (ngModelChange)="type.set($event); onSearch()">
+        <mat-option value="">All Types</mat-option>
+        @for (t of types; track t) {
+          <mat-option [value]="t">{{ t }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (search() || type() || franchise()) {
+      <button mat-stroked-button (click)="clearFilters()">
+        <i class="fas fa-times"></i> Clear
+      </button>
+    }
+  </div>
+</section>
+
+@if (loading()) {
+  <p class="status"><i class="fas fa-spinner fa-spin"></i> Loading products...</p>
+} @else if (error()) {
+  <p class="status error">{{ error() }}</p>
+} @else {
+  <section class="product-grid">
+    @for (product of products(); track product.id) {
+      <mat-card class="product-card">
+        <mat-card-header>
+          <mat-card-subtitle>{{ product.franchiseName }}</mat-card-subtitle>
+          <mat-card-title>
+            <a [routerLink]="['/products', product.id]">{{ product.name }}</a>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="product-type"><i class="fas fa-tag"></i> {{ product.type }}</span>
+          <span class="product-price">{{ product.price | currency:'INR':'symbol':'1.0-0' }}</span>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="card-actions">
+            <div class="quantity-control">
+              <button mat-icon-button (click)="setQuantity(product.id, getQuantity(product.id) - 1)" [disabled]="getQuantity(product.id) <= 1">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span class="qty-value">{{ getQuantity(product.id) }}</span>
+              <button mat-icon-button (click)="setQuantity(product.id, getQuantity(product.id) + 1)">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <button mat-flat-button color="primary" (click)="addToCart(product)">
+              <i class="fas fa-cart-plus"></i> Add
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    } @empty {
+      <p class="status">No products found.</p>
+    }
+  </section>
+
+  @if (totalPages() > 1) {
+    <nav class="pagination">
+      <button mat-stroked-button [disabled]="page() <= 1" (click)="goToPage(page() - 1)">
+        <i class="fas fa-chevron-left"></i> Previous
+      </button>
+      <span>Page {{ page() }} of {{ totalPages() }}</span>
+      <button mat-stroked-button [disabled]="page() >= totalPages()" (click)="goToPage(page() + 1)">
+        Next <i class="fas fa-chevron-right"></i>
+      </button>
+    </nav>
+  }
+}

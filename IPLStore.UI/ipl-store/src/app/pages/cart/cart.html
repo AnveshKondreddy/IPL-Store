@@ -1,0 +1,80 @@
+<div class="cart-container">
+  <h1><i class="fas fa-shopping-cart"></i> Your Cart</h1>
+
+  @if (loading()) {
+    <p class="status"><i class="fas fa-spinner fa-spin"></i> Loading cart...</p>
+  } @else if (!cart() || cart()!.items.length === 0) {
+    <mat-card class="empty-cart">
+      <mat-card-content>
+        <p><i class="fas fa-shopping-basket"></i> Your cart is empty</p>
+        <a mat-flat-button color="primary" routerLink="/">
+          <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <table mat-table [dataSource]="cart()!.items" class="cart-table">
+
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef>Product</th>
+        <td mat-cell *matCellDef="let item">{{ item.productName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let item">{{ item.unitPrice | currency:'INR':'symbol':'1.0-0' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let item">
+          <div class="quantity-control">
+            <button mat-icon-button [disabled]="item.quantity <= 1" (click)="updateQuantity(item.productId, item.quantity - 1)">
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="qty-value">{{ item.quantity }}</span>
+            <button mat-icon-button (click)="updateQuantity(item.productId, item.quantity + 1)">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let item">{{ item.unitPrice * item.quantity | currency:'INR':'symbol':'1.0-0' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let item">
+          <button mat-icon-button color="warn" (click)="removeItem(item.productId)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-card class="cart-summary">
+      <mat-card-content>
+        <div class="summary-row">
+          <span>Total ({{ cart()!.items.length }} items)</span>
+          <span class="total-price">{{ cart()!.totalAmount | currency:'INR':'symbol':'1.0-0' }}</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <a mat-button routerLink="/">Continue Shopping</a>
+        <button mat-flat-button color="primary" [disabled]="checkingOut()" (click)="checkout()">
+          @if (checkingOut()) {
+            <i class="fas fa-spinner fa-spin"></i> Placing Order...
+          } @else {
+            <i class="fas fa-credit-card"></i> Checkout
+          }
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>
