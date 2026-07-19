@@ -10,6 +10,7 @@ An ecommerce platform for selling official IPL franchise merchandise — jerseys
 | ORM            | Entity Framework Core 10                    |
 | Database       | SQL Server                                  |
 | Frontend       | Angular 22 with Angular Material            |
+| Observability  | Azure Application Insights                  |
 | Testing        | MSTest + Moq                                |
 
 ## Project Structure
@@ -38,8 +39,12 @@ IPLStore.UI/
 * Shopping cart with add, update quantity, and remove
 * Checkout that validates stock and decrements inventory
 * Order history with expandable order details
+* Auto-search triggers after 3 characters with 300ms debounce
+* Batch product loading during checkout (eliminates N+1 queries)
+* SQL Server connection resilience with automatic retry on transient failures
 * Concurrency handling via EF Core row versioning
 * Global exception handler with structured problem+json responses
+* Application Insights telemetry for request tracking, dependency monitoring, and log aggregation
 
 ## Prerequisites
 
