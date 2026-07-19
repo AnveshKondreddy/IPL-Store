@@ -18,10 +18,12 @@ namespace IPLStore.Application.Services
             if (cart.Items.Count == 0)
                 return Result<OrderDto>.ValidationError("Cannot checkout an empty cart.");
 
+            var productIds = cart.Items.Select(i => i.ProductId);
+            var products = await orderRepo.GetProductsForUpdateAsync(productIds, cancellationToken);
+
             foreach (var item in cart.Items)
             {
-                var product = await orderRepo.GetProductForUpdateAsync(item.ProductId, cancellationToken);
-                if (product is null || !product.IsActive)
+                if (!products.TryGetValue(item.ProductId, out var product) || !product.IsActive)
                     return Result<OrderDto>.ValidationError("Product is no longer available.");
 
                 if (product.StockQty < item.Quantity)

@@ -113,6 +113,11 @@ namespace IPLStore.Infrastructure
         public Task<Product?> GetProductForUpdateAsync(int productId, CancellationToken cancellationToken)
             => dbContext.Products.SingleOrDefaultAsync(p => p.Id == productId, cancellationToken);
 
+        public async Task<Dictionary<int, Product>> GetProductsForUpdateAsync(IEnumerable<int> productIds, CancellationToken cancellationToken)
+            => await dbContext.Products
+                .Where(p => productIds.Contains(p.Id))
+                .ToDictionaryAsync(p => p.Id, cancellationToken);
+
         public Task AddOrderAsync(Order order, CancellationToken cancellationToken)
         {
             dbContext.Orders.Add(order);
