@@ -1,6 +1,7 @@
-import { Component, DestroyRef, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, DestroyRef, effect, inject, OnInit, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -46,6 +47,8 @@ export class HomeComponent implements OnInit {
 
   readonly totalPages = computed(() => Math.ceil(this.totalCount() / this.pageSize));
 
+  private readonly searchSubject = new Subject<string>();
+
   readonly franchises = [
     { name: 'Mumbai Indians', code: 'MI' },
     { name: 'Chennai Super Kings', code: 'CSK' },
@@ -54,8 +57,23 @@ export class HomeComponent implements OnInit {
   ];
   readonly types = ['Jersey', 'Cap', 'Flag', 'Mug', 'Hoodie', 'T-Shirt'];
 
+  constructor() {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => this.onSearch());
+  }
+
   ngOnInit(): void {
     this.loadProducts();
+  }
+
+  onSearchInput(value: string): void {
+    this.search.set(value);
+    if (value.length >= 3 || value.length === 0) {
+      this.searchSubject.next(value);
+    }
   }
 
   loadProducts(): void {

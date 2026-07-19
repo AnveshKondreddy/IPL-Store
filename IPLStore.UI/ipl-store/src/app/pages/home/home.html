@@ -6,7 +6,7 @@
 <section class="filters">
   <mat-form-field appearance="outline" class="search-field">
     <mat-label>Search products</mat-label>
-    <input matInput [ngModel]="search()" (ngModelChange)="search.set($event)" (keyup.enter)="onSearch()" />
+    <input matInput [ngModel]="search()" (ngModelChange)="onSearchInput($event)" (keyup.enter)="onSearch()" />
     <button matSuffix mat-icon-button (click)="onSearch()">
       <i class="fas fa-search"></i>
     </button>

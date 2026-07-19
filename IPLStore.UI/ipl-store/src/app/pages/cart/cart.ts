@@ -48,13 +48,13 @@ export class CartComponent implements OnInit {
     if (qty < 1) return;
     this.api.updateCartItem(this.auth.username()!, productId, qty)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.loadCart());
+      .subscribe(c => this.cart.set(c));
   }
 
   removeItem(productId: number): void {
     this.api.removeCartItem(this.auth.username()!, productId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.loadCart());
+      .subscribe(c => this.cart.set(c));
   }
 
   checkout(): void {
