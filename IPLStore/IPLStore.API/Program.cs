@@ -23,7 +23,10 @@ builder.Services.AddScoped<IOrderQueries>(sp => sp.GetRequiredService<IPLStoreRe
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddApplicationInsightsTelemetry();
+
+//Uncomment when AI connection string is added in settings
+//builder.Services.AddApplicationInsightsTelemetry();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
