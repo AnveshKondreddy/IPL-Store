@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IPLStore.API.Controllers
 {
+    [ApiController]
     [Route("api/orders")]
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
