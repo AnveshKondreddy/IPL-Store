@@ -1,7 +1,9 @@
 <Solution>
+  <Folder Name="/Tests/">
+    <Project Path="IPLStore.Tests/IPLStore.Application.Tests.csproj" Id="4dac0d3f-12a0-432c-8635-cbaf202aad20" />
+  </Folder>
   <Project Path="IPLStore.API/IPLStore.API.csproj" />
   <Project Path="IPLStore.Application/IPLStore.Application.csproj" />
   <Project Path="IPLStore.Domain/IPLStore.Domain.csproj" />
   <Project Path="IPLStore.Infrastructure/IPLStore.Infrastructure.csproj" />
-  <Project Path="IPLStore.Tests/IPLStore.Application.Tests.csproj" Id="4dac0d3f-12a0-432c-8635-cbaf202aad20" />
 </Solution>

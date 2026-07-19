@@ -66,7 +66,6 @@ export class CartComponent implements OnInit {
           this.router.navigate(['/orders'], { queryParams: { placed: order.id } });
         },
         error: (err) => {
-          debugger;
           this.snackBar.open(err.error.message || 'Checkout failed. Please try again.', 'OK', { duration: 3000 });
           this.checkingOut.set(false);
         }
