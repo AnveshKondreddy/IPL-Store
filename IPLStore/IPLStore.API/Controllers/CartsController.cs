@@ -1,4 +1,4 @@
-﻿using IPLStore.API.Extentions;
+﻿using IPLStore.API.Extensions;
 using IPLStore.Application.Interfaces.Service;
 using IPLStore.Application.Models;
 using Microsoft.AspNetCore.Mvc;

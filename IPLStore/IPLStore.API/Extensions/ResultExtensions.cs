@@ -1,7 +1,7 @@
 ﻿using IPLStore.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IPLStore.API.Extentions
+namespace IPLStore.API.Extensions
 {
     public static class ResultExtensions
     {
